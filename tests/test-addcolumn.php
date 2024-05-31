@@ -16,10 +16,10 @@ try {
 
     // Verify the new column exists by inserting data
     $user = new User([
-        'name' => 'Alice',
-        'email' => 'alice@example.com',
-        'password' => 'password789',
-        'age' => 30
+        'name' => 'fatima',
+        'email' => 'fatima@gmail.com',
+        'password' => 'fatima@1234',
+        'age' => 123
     ]);
 
     if ($user->save()) {

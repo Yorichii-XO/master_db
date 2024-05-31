@@ -24,8 +24,8 @@ try {
 
     // Créer un nouvel utilisateur
     $user = new User([
-        'name' => 'John Doe',
-        'email' => 'john@example.com',
+        'name' => 'marwa',
+        'email' => 'marwa@gmail.com',
         'password' => 'secret'
     ]);
 
