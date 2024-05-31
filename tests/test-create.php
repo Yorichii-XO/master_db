@@ -1,22 +1,22 @@
 <?php
-require_once './src/Product.php';
+// require_once './src/Product.php';
 
-$product = new Product([
-    'name' => 'Product 1',
-    'price' => 100
-]);
+// $product = new Product([
+//     'name' => 'Product 1',
+//     'price' => 100
+// ]);
 
-if ($product->save()) {
-    echo "Product created successfully.";
-} else {
-    echo "Failed to create product.";
-}
-?>
+// if ($product->save()) {
+//     echo "Product created successfully.";
+// } else {
+//     echo "Failed to create product.";
+// }
+// ?>
 
 
 
-<!-- <?php
-require_once '../src/User.php';
+<?php
+require_once './src/User.php';
 
 try {
     // Créer la table des utilisateurs
@@ -37,4 +37,4 @@ try {
 } catch (Exception $e) {
     echo "Error: " . $e->getMessage();
 }
-?> -->
+?>

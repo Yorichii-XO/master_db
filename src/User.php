@@ -19,17 +19,5 @@ class User extends ORM {
         $this->email = $attributes['email'] ?? null;
         $this->password = $attributes['password'] ?? null;
     }
-
-    public function save() {
-        // Check if email is unique
-        $sql = "SELECT COUNT(*) FROM " . static::$table . " WHERE email = :email";
-        $stmt = Database::getInstance()->prepare($sql);
-        $stmt->execute([':email' => $this->email]);
-        if ($stmt->fetchColumn() > 0) {
-            throw new Exception("Email already exists.");
-        }
-
-        return parent::save();
-    }
 }
 ?>

@@ -12,13 +12,16 @@ class ORM implements ORMInterface {
     }
 
     public function save() {
-        $columns = array_keys($this->attributes);
-        $placeholders = array_map(function($col) { return ":$col"; }, $columns);
-        $sql = "INSERT INTO " . static::$table . " (" . implode(", ", $columns) . ") VALUES (" . implode(", ", $placeholders) . ")";
-        $stmt = Database::getInstance()->prepare($sql);
-        return $stmt->execute($this->attributes);
+        // Check if email is unique if email is part of attributes
+        if (array_key_exists('email', $this->attributes)) {
+            $sql = "SELECT COUNT(*) FROM " . static::$table . " WHERE email = :email";
+            $stmt = Database::getInstance()->prepare($sql);
+            $stmt->execute([':email' => $this->attributes['email']]);
+            if ($stmt->fetchColumn() > 0) {
+                throw new Exception("Email already exists.");
+            }
+        }
     }
-
     public function update() {
         $setClause = [];
         foreach ($this->attributes as $column => $value) {
@@ -90,6 +93,34 @@ class ORM implements ORMInterface {
             return static::createTable();
         }
         return false;
+    }
+    public static function addColumn($column, $type) {
+        switch ($type) {
+            case 'string':
+                $columnType = 'VARCHAR(255)';
+                break;
+            case 'integer':
+                $columnType = 'INT';
+                break;
+            case 'boolean':
+                $columnType = 'TINYINT(1)';
+                break;
+            case 'timestamp':
+                $columnType = 'TIMESTAMP DEFAULT CURRENT_TIMESTAMP';
+                break;
+            default:
+                throw new Exception("Unsupported type: $type");
+        }
+
+        $sql = "ALTER TABLE " . static::$table . " ADD COLUMN $column $columnType";
+        $stmt = Database::getInstance()->prepare($sql);
+        return $stmt->execute();
+    }
+
+    public static function dropColumn($column) {
+        $sql = "ALTER TABLE " . static::$table . " DROP COLUMN $column";
+        $stmt = Database::getInstance()->prepare($sql);
+        return $stmt->execute();
     }
 }
 ?>
